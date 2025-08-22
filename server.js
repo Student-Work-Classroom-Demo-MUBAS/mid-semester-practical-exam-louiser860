@@ -20,6 +20,7 @@ const availableCourses = [
 const enrollments = []; // { id, studentName, studentId, courseCode, courseName, semester, reason, enrollmentDate }
 let enrollmentIdCounter = 1;
 
+
 /* ===== Helpers ===== */
 const page = (title, body) => `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -105,25 +106,67 @@ app.post('/enroll', (req, res) => {
     
   // 2) Validate: required fields; studentId matches YYYY-NNNN; course exists
 
-  function validateForm() {
+//   function validateForm() {
   
-  if (studentId === "") {
-    alert("studentId must be filled out");
-    return false; // Prevent form submission
+//   if (studentId === "") {
+//     alert("studentId must be filled out");
+//     return false; // Prevent form submission
+//   }
+
+//   if (course === "") {
+//     alert("course must exist");
+//     return false; // Prevent form submission
+//   }
+
+//   return true; // Allow form submission
+// }
+let studentName = studentName;
+
+ if (!studentName || !studentId || !courseCode || !semester) {
+    return res.status(400).send(page('Error', `
+      <p class="error">All fields except reason are required.</p>
+      <p><a href="/">Back</a></p>
+    `));
   }
 
-  if (course === "") {
-    alert("course must exist");
-    return false; // Prevent form submission
+  // Validate student ID format
+  if (!studentIdOk(studentId)) {
+    return res.status(400).send(page('Error', `
+      <p class="error">Student ID must match format YYYY-NNNN.</p>
+      <p><a href="/">Back</a></p>
+    `));
   }
 
-  return true; // Allow form submission
-}
-document.getElementsByClassName("form-group").onsubmit = validateForm;
+  // Validate course exists
+  const course = courseByCode(courseCode);
+  if (!course) {
+    return res.status(400).send(page('Error', `
+      <p class="error">Course code not found.</p>
+      <p><a href="/">Back</a></p>
+    `));
+  }
+
+  // Create and store enrollment
+  const newEnroll = {
+    id: enrollmentIdCounter++,
+    studentName,
+    studentId,
+    courseCode,
+    courseName: course.name,
+    semester,
+    reason,
+    enrollmentDate: Date.now()
+  };
+
+  enrollments.push(newEnroll);
+  res.redirect('/enrollments');
+
+// document.getElementsByClassName("form-group").onsubmit = validateForm;
 // document.getElementById("myForm").onsubmit = validateForm;
 
 
   // 3) Create enrollment object; push; increment id
+  
   // 4) Redirect to /enrollments on success; otherwise show error page with Back link
 
   /* Example shape to build (DO NOT UNCOMMENT — for reference only)
@@ -141,8 +184,15 @@ document.getElementsByClassName("form-group").onsubmit = validateForm;
 
 // Unenroll (form POST)
 app.post('/unenroll/:id', (req, res) => {
+  
   // TODO:
   // 1) Parse id from req.params
+      const unenrollId = req.params.id;
+  res.send(`unenroll ID is: ${unenrollId}`);
+        
+        // Now 'userId' contains the value of the 'id' from the URL
+        
+    
   // 2) Remove matching enrollment from array if found
   // 3) Redirect back to /enrollments (or show error)
 
