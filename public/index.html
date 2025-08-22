@@ -1,4 +1,4 @@
-<!doctype html>
+<!-- <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -68,6 +68,61 @@
 
   <footer class="footer">
     <small>Fill the form and submit. Check <a href="/enrollments">Enrollments</a> to confirm.</small>
+  </footer>
+</body>
+</html> -->
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enroll in a Course</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>MegaUniversity — Enroll in a Course</h1>
+    <nav class="nav">
+      <a href="/">Enroll</a>
+      <a href="/enrollments">Enrollments</a>
+      <a href="/courses">Courses</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Enrollment Form</h2>
+      <form action="/enroll" method="POST">
+        <label>Student Name:
+          <input type="text" name="studentName" required />
+        </label>
+        <label>Student ID (YYYY-NNNN):
+          <input type="text" name="studentId" required pattern="\\d{4}-\\d{4}" />
+        </label>
+        <label>Course Code:
+          <select name="courseCode" required>
+            <option value="">-- Select a course --</option>
+            <option value="CS401">CS401 — Advanced Web Development</option>
+            <option value="CS402">CS402 — Database Systems</option>
+            <option value="CS403">CS403 — Software Engineering</option>
+            <option value="CS404">CS404 — Computer Networks</option>
+            <option value="CS405">CS405 — Artificial Intelligence</option>
+          </select>
+        </label>
+        <label>Semester:
+          <input type="text" name="semester" required placeholder="e.g. Fall 2025" />
+        </label>
+        <label>Reason (optional):
+          <textarea name="reason" rows="3"></textarea>
+        </label>
+        <button type="submit">Submit Enrollment</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>Complete the TODOs in server.js, index.html, and style.css.</small>
   </footer>
 </body>
 </html>
