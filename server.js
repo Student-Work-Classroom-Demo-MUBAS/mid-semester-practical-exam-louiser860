@@ -92,12 +92,37 @@ app.get('/courses', (req, res) => {
   const body = `<section class="grid">${cards}</section>`;
   res.send(page('Courses', body));
 });
-
+app.use(express.json());
 // Handle enrollment via standard form POST (uses req.body only)
 app.post('/enroll', (req, res) => {
   // TODO:
   // 1) Read fields from req.body: studentName, studentId, courseCode, semester, reason(optional)
+   const requestBody = req.body; // Access the parsed body
+        console.log(requestBody);
+        res.send('Data received');
+  app.listen(3000, () => console.log('Server running on port 3000'));
+  
+    
   // 2) Validate: required fields; studentId matches YYYY-NNNN; course exists
+
+  function validateForm() {
+  
+  if (studentId === "") {
+    alert("studentId must be filled out");
+    return false; // Prevent form submission
+  }
+
+  if (course === "") {
+    alert("course must exist");
+    return false; // Prevent form submission
+  }
+
+  return true; // Allow form submission
+}
+document.getElementsByClassName("form-group").onsubmit = validateForm;
+// document.getElementById("myForm").onsubmit = validateForm;
+
+
   // 3) Create enrollment object; push; increment id
   // 4) Redirect to /enrollments on success; otherwise show error page with Back link
 
